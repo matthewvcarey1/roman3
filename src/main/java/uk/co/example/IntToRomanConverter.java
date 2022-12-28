@@ -18,12 +18,18 @@ public class IntToRomanConverter {
                 return;
             }
             IntToRomanConverter converter = new IntToRomanConverter();
+            int limit = converter.getTopLimit();
+            if(value >= limit){
+                System.out.println("Expected a positive integer less than "+ limit);
+                return;
+            }
             System.out.println(converter.convert(value));
         } catch (Exception e){
             System.out.println(message);
         }
     }
     private ArrayList<RomanPowerOfTen> romanPowers;
+    private int limit;
     public IntToRomanConverter(){
         romanPowers = new ArrayList<>();
         JSONParser parser = new JSONParser();
@@ -36,6 +42,7 @@ public class IntToRomanConverter {
                 Object ob = romanNumbersIterator.next();
                 JSONObject romanObject = (JSONObject)ob;
                 long unit = (Long) romanObject.get("unit");
+                this.limit = (int) unit * 10;
                 JSONArray romans = (JSONArray) romanObject.get("romans");
                 ArrayList<String> romansList = new ArrayList<>();
                 Iterator romansIterator = romans.iterator();
@@ -69,6 +76,10 @@ public class IntToRomanConverter {
             result.append(rpt.getRoman(index));
         }
         return result.toString();
+    }
+
+    public int getTopLimit(){
+        return limit;
     }
 
 }
