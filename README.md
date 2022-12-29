@@ -1,12 +1,16 @@
 # Noddy Integer to Roman Numeral Converter in Java
-In this implementation different algorithm uses a json config file.
+In this implementation a different algorithm uses a json config file.
+
+There seem to be several ways of implementing large roman numbers and config files gives us the possibility of switching between them.
+
+This implementation represents roman numbers a bit more like arabic numbers with different strings for each digit that get concatinated together. Just that zero is an empty string.
 ### Usual Gradle instructions
 To build and test
 ```bash
 ./gradlew build
 ```
 
-To create an jar file that can be executed with java -jar filename.jar
+To create a jar file that can be executed with java -jar filename.jar
 ```bash
 ./gradlew jar
 ```
