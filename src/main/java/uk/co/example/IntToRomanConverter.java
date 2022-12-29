@@ -9,23 +9,19 @@ import java.lang.Math;
 
 
 public class IntToRomanConverter {
-    private static final String message = "Expected a valid positive integer greater than 0, as an input parameter";
+    private static final String message = "Expected as an input parameter of a valid positive integer greater than 0, and less than ";
     public static void main(String[] args) {
+        IntToRomanConverter converter = new IntToRomanConverter();
+        int limit = converter.getTopLimit();
         try {
             final int value = (args.length > 0) ? Integer.parseInt(args[0]) : 0;
-            if (value <= 0){
-                System.out.println(message);
-                return;
-            }
-            IntToRomanConverter converter = new IntToRomanConverter();
-            int limit = converter.getTopLimit();
-            if(value >= limit){
-                System.out.println("Expected a positive integer less than "+ limit);
+            if(!converter.validate(value)){
+                System.out.println(message + limit);
                 return;
             }
             System.out.println(converter.convert(value));
         } catch (Exception e){
-            System.out.println(message);
+            System.out.println(message + limit);
         }
     }
     private ArrayList<RomanPowerOfTen> romanPowers;
@@ -56,16 +52,16 @@ public class IntToRomanConverter {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error reading configuration file");
-            System.exit(3);
+            System.exit(1);
         }
         catch(Exception e){
             e.printStackTrace();
             System.out.println("other exeption");
-            System.exit(4);
+            System.exit(2);
         }
     }
     public String convert(int decimal){
-        int startIndex = (int) Math.log10(decimal);
+        final int startIndex = (int) Math.log10(decimal);
         StringBuilder result = new StringBuilder();
         ListIterator<RomanPowerOfTen> iterator = romanPowers.listIterator(startIndex < romanPowers.size()? startIndex+1 : romanPowers.size());
         while(iterator.hasPrevious()){
@@ -82,4 +78,11 @@ public class IntToRomanConverter {
         return limit;
     }
 
+    public boolean validate(int decimal){
+        int limit = getTopLimit();
+        if(decimal <= 0 || decimal >= limit){
+            return false;
+        }
+        return true;
+    }
 }
