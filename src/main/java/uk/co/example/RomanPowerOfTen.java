@@ -13,7 +13,7 @@ public class RomanPowerOfTen {
     long getUnit(){
         return unit;
     }
-    String getRoman(int index){
-        return index >= 0 && (index < romans.size())? romans.get(index) : "";
+    String getRoman(long index){
+        return index >= 0 && (index < romans.size())? romans.get((int)index) : "";
     }
 }

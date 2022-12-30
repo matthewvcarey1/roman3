@@ -31,15 +31,33 @@ class IntToRomanConverterTest {
         assertEquals("MMCMIV",result);
     }
     @Test
-    void test2994() {
+    void test69000000() {
         IntToRomanConverter testConvertor = new IntToRomanConverter();
-        String result = testConvertor.convert(2994);
-        assertEquals("MMCMXCIV",result);
+        String result = testConvertor.convert(69000000);
+        assertEquals("L̿X̿I̿X̿",result);
     }
 
 
     @Test
-    void nothing(){
-        assertEquals(true,true);
+    void validateHappy() {
+        IntToRomanConverter testConvertor = new IntToRomanConverter();
+        assertTrue(testConvertor.validate(1));
+    }
+
+    @Test
+    void validateZero(){
+        IntToRomanConverter testConvertor = new IntToRomanConverter();
+        assertFalse(testConvertor.validate(0));
+    }
+    @Test
+    void validateMinus1(){
+        IntToRomanConverter testConvertor = new IntToRomanConverter();
+        assertFalse(testConvertor.validate(-1));
+    }
+
+    @Test
+    void validate10000000000(){
+        IntToRomanConverter testConvertor = new IntToRomanConverter();
+        assertFalse(testConvertor.validate(10000000000L));
     }
 }

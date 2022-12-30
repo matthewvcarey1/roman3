@@ -12,9 +12,9 @@ public class IntToRomanConverter {
     private static final String message = "Expected as an input parameter of a valid positive integer greater than 0, and less than ";
     public static void main(String[] args) {
         IntToRomanConverter converter = new IntToRomanConverter();
-        int limit = converter.getTopLimit();
+        long limit = converter.getTopLimit();
         try {
-            final int value = (args.length > 0) ? Integer.parseInt(args[0]) : 0;
+            final long value = (args.length > 0) ? Long.parseLong(args[0]) : 0;
             if(!converter.validate(value)){
                 System.out.println(message + limit);
                 return;
@@ -25,7 +25,7 @@ public class IntToRomanConverter {
         }
     }
     private ArrayList<RomanPowerOfTen> romanPowers;
-    private int limit;
+    private long limit;
     public IntToRomanConverter(){
         romanPowers = new ArrayList<>();
         JSONParser parser = new JSONParser();
@@ -38,7 +38,7 @@ public class IntToRomanConverter {
                 Object ob = romanNumbersIterator.next();
                 JSONObject romanObject = (JSONObject)ob;
                 long unit = (Long) romanObject.get("unit");
-                this.limit = (int) unit * 10;
+                this.limit =  unit * 10;
                 JSONArray romans = (JSONArray) romanObject.get("romans");
                 ArrayList<String> romansList = new ArrayList<>();
                 Iterator romansIterator = romans.iterator();
@@ -60,26 +60,26 @@ public class IntToRomanConverter {
             System.exit(2);
         }
     }
-    public String convert(int decimal){
-        final int startIndex = (int) Math.log10(decimal);
+    public String convert(long decimal){
+        final long startIndex = (long) Math.log10(decimal);
         StringBuilder result = new StringBuilder();
-        ListIterator<RomanPowerOfTen> iterator = romanPowers.listIterator(startIndex < romanPowers.size()? startIndex+1 : romanPowers.size());
+        ListIterator<RomanPowerOfTen> iterator = romanPowers.listIterator((int) startIndex < romanPowers.size()? (int)startIndex+1 : romanPowers.size());
         while(iterator.hasPrevious()){
             RomanPowerOfTen rpt = iterator.previous();
-            final int unit = (int) rpt.getUnit();
-            final int lastUnit = unit * 10;
-            final int index = (decimal % lastUnit) / unit;
+            final long unit = rpt.getUnit();
+            final long lastUnit = unit * 10;
+            final long index = (decimal % lastUnit) / unit;
             result.append(rpt.getRoman(index));
         }
         return result.toString();
     }
 
-    public int getTopLimit(){
+    public long getTopLimit(){
         return limit;
     }
 
-    public boolean validate(int decimal){
-        int limit = getTopLimit();
+    public boolean validate(long decimal){
+        long limit = getTopLimit();
         if(decimal <= 0 || decimal >= limit){
             return false;
         }
