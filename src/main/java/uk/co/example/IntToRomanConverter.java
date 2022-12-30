@@ -9,6 +9,7 @@ import java.lang.Math;
 
 
 public class IntToRomanConverter {
+    private final long BASE = 10;
     private static final String message = "Expected as an input parameter of a valid positive integer greater than 0, and less than ";
     public static void main(String[] args) {
         IntToRomanConverter converter = new IntToRomanConverter();
@@ -28,6 +29,7 @@ public class IntToRomanConverter {
     private long limit;
     public IntToRomanConverter(){
         romanPowers = new ArrayList<>();
+        // Read definitions of Roman 'digit character strings' from a json configuration file
         JSONParser parser = new JSONParser();
         try {
             Object obj = parser.parse(new FileReader("src/main/resources/definitions/romanNumbers.json"));
@@ -38,7 +40,7 @@ public class IntToRomanConverter {
                 Object ob = romanNumbersIterator.next();
                 JSONObject romanObject = (JSONObject)ob;
                 long unit = (Long) romanObject.get("unit");
-                this.limit =  unit * 10;
+                this.limit =  unit * BASE;
                 JSONArray romans = (JSONArray) romanObject.get("romans");
                 ArrayList<String> romansList = new ArrayList<>();
                 Iterator romansIterator = romans.iterator();
@@ -61,15 +63,17 @@ public class IntToRomanConverter {
         }
     }
     public String convert(long decimal){
-        final long startIndex = (long) Math.log10(decimal);
+        // I should really check if Math.log!0() is actually quicker than the n iterations in avoids
+        final int startIndex = (int) Math.log10(decimal);
         StringBuilder result = new StringBuilder();
-        ListIterator<RomanPowerOfTen> iterator = romanPowers.listIterator((int) startIndex < romanPowers.size()? (int)startIndex+1 : romanPowers.size());
+        ListIterator<RomanPowerOfTen> iterator = romanPowers.listIterator((int) startIndex < romanPowers.size()? startIndex+1 : romanPowers.size());
         while(iterator.hasPrevious()){
             RomanPowerOfTen rpt = iterator.previous();
             final long unit = rpt.getUnit();
-            final long lastUnit = unit * 10;
-            final long indexOfStrings = (decimal % lastUnit) / unit;
-            result.append(rpt.getRoman(indexOfStrings));
+            final long lastUnit = unit * BASE;
+            // indexOfString: always a value in the range 0-9
+            final int indexOfString = (int) ((decimal % lastUnit) / unit);
+            result.append(rpt.getRoman(indexOfString));
         }
         return result.toString();
     }
