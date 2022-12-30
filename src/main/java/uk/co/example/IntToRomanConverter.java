@@ -68,8 +68,8 @@ public class IntToRomanConverter {
             RomanPowerOfTen rpt = iterator.previous();
             final long unit = rpt.getUnit();
             final long lastUnit = unit * 10;
-            final long index = (decimal % lastUnit) / unit;
-            result.append(rpt.getRoman(index));
+            final long indexOfStrings = (decimal % lastUnit) / unit;
+            result.append(rpt.getRoman(indexOfStrings));
         }
         return result.toString();
     }
