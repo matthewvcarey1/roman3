@@ -12,6 +12,11 @@ import java.lang.Math;
 public class IntToRomanConverter {
     private final long BASE = 10;
     private static final String ARGUMENT_ERROR_MESSAGE = "Expected as an input parameter of a valid positive integer greater than 0, and less than ";
+
+    /**
+     * An entry point that takes a decimal string and prints out the roman number to stdout
+     * @param args expects amd array of at least one string value. That value should be a representation of an integer.
+     */
     public static void main(String[] args) {
         IntToRomanConverter converter = IntToRomanConverter.getInstance();
         long limit = converter.getTopLimit();
@@ -121,7 +126,7 @@ public class IntToRomanConverter {
 
     /**
      * Validate that the long integer is within the range that can be represented
-     * @param decimal
+     * @param decimal The number to be validated.
      * @return  true or false
      */
     public boolean validate(long decimal){
