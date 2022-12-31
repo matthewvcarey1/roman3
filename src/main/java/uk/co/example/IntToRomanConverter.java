@@ -5,6 +5,7 @@ import java.util.*;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 import java.io.IOException;
+import org.json.simple.parser.ParseException;
 import java.lang.Math;
 
 
@@ -74,10 +75,15 @@ public class IntToRomanConverter {
             System.out.println("Error reading configuration file");
             System.exit(1);
         }
+        catch (ParseException e) {
+            e.printStackTrace();
+            System.out.println("Error parsing configuration file");
+            System.exit(2);
+        }
         catch(Exception e){
             e.printStackTrace();
-            System.out.println("other exeption");
-            System.exit(2);
+            System.out.println("Other exception");
+            System.exit(3);
         }
     }
 
