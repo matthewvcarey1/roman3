@@ -90,14 +90,15 @@ public class IntToRomanConverter {
         // I should really check if Math.log!0() is actually quicker than the n empty iterations in avoids
         final int startIndex = (int) Math.log10(decimal);
         StringBuilder result = new StringBuilder();
-        ListIterator<RomanPowerOfTen> iterator = romanPowers.listIterator((int) startIndex < romanPowers.size()? startIndex+1 : romanPowers.size());
+        ListIterator<RomanPowerOfTen> iterator = romanPowers.listIterator(startIndex < romanPowers.size()? startIndex+1 : romanPowers.size());
         while(iterator.hasPrevious()){
             RomanPowerOfTen rpt = iterator.previous();
             final long unit = rpt.getUnit();
             final long previousUnit = unit * BASE;
-            // indexOfString: always a value in the range 0-9
             final long remainder = decimal % previousUnit;
+            // Avoid empty iterations below result
             if (remainder == 0L) break;
+            // indexOfString: always a value in the range 0-9
             final int indexOfString = (int) (remainder / unit);
             result.append(rpt.getRoman(indexOfString));
         }
