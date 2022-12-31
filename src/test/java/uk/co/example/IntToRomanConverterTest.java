@@ -8,31 +8,31 @@ class IntToRomanConverterTest {
 
     @Test
     void test3000() {
-        IntToRomanConverter testConvertor = new IntToRomanConverter();
+        IntToRomanConverter testConvertor = IntToRomanConverter.getInstance();
         String result = testConvertor.convert(3000);
         assertEquals("MMM",result);
     }
     @Test
     void test2900() {
-        IntToRomanConverter testConvertor = new IntToRomanConverter();
+        IntToRomanConverter testConvertor = IntToRomanConverter.getInstance();
         String result = testConvertor.convert(2900);
         assertEquals("MMCM",result);
     }
     @Test
     void test2905() {
-        IntToRomanConverter testConvertor = new IntToRomanConverter();
+        IntToRomanConverter testConvertor = IntToRomanConverter.getInstance();
         String result = testConvertor.convert(2905);
         assertEquals("MMCMV",result);
     }
     @Test
     void test2904() {
-        IntToRomanConverter testConvertor = new IntToRomanConverter();
+        IntToRomanConverter testConvertor = IntToRomanConverter.getInstance();
         String result = testConvertor.convert(2904);
         assertEquals("MMCMIV",result);
     }
     @Test
     void test69000000() {
-        IntToRomanConverter testConvertor = new IntToRomanConverter();
+        IntToRomanConverter testConvertor = IntToRomanConverter.getInstance();
         String result = testConvertor.convert(69000000);
         assertEquals("L̿X̿I̿X̿",result);
     }
@@ -40,24 +40,24 @@ class IntToRomanConverterTest {
 
     @Test
     void validateHappy() {
-        IntToRomanConverter testConvertor = new IntToRomanConverter();
+        IntToRomanConverter testConvertor = IntToRomanConverter.getInstance();
         assertTrue(testConvertor.validate(1));
     }
 
     @Test
     void validateZero(){
-        IntToRomanConverter testConvertor = new IntToRomanConverter();
+        IntToRomanConverter testConvertor = IntToRomanConverter.getInstance();
         assertFalse(testConvertor.validate(0));
     }
     @Test
     void validateMinus1(){
-        IntToRomanConverter testConvertor = new IntToRomanConverter();
+        IntToRomanConverter testConvertor = IntToRomanConverter.getInstance();
         assertFalse(testConvertor.validate(-1));
     }
 
     @Test
     void validate10000000000(){
-        IntToRomanConverter testConvertor = new IntToRomanConverter();
+        IntToRomanConverter testConvertor = IntToRomanConverter.getInstance();
         assertFalse(testConvertor.validate(10000000000L));
     }
 }

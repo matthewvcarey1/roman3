@@ -12,7 +12,7 @@ public class IntToRomanConverter {
     private final long BASE = 10;
     private static final String ARGUMENT_ERROR_MESSAGE = "Expected as an input parameter of a valid positive integer greater than 0, and less than ";
     public static void main(String[] args) {
-        IntToRomanConverter converter = new IntToRomanConverter();
+        IntToRomanConverter converter = IntToRomanConverter.getInstance();
         long limit = converter.getTopLimit();
         try {
             final long value = (args.length > 0) ? Long.parseLong(args[0]) : 0;
@@ -27,7 +27,23 @@ public class IntToRomanConverter {
     }
     private ArrayList<RomanPowerOfTen> romanPowers;
     private long limit;
-    public IntToRomanConverter(){
+
+    /**
+     * Returns an instance of IntToRomanConverter
+     * Making this class follow the singleton pattern.
+     * This is to reduce the amount of times the configuration files have to be read.
+     * Outside the constructor and this function none of the class member values are ever changed.
+     * @return IntToRomanConverter
+     */
+    public synchronized static IntToRomanConverter getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new IntToRomanConverter();
+        }
+        return INSTANCE;
+    }
+    private static IntToRomanConverter INSTANCE;
+
+    private IntToRomanConverter(){
         romanPowers = new ArrayList<>();
         // Read definitions of Roman 'digit character strings' from a json configuration file
         JSONParser parser = new JSONParser();
@@ -40,7 +56,9 @@ public class IntToRomanConverter {
                 Object ob = romanNumbersIterator.next();
                 JSONObject romanObject = (JSONObject)ob;
                 final long unit = (Long) romanObject.get("unit");
-                this.limit =  unit * BASE;
+                if(!romanNumbersIterator.hasNext()) {
+                    this.limit = unit * BASE;
+                }
                 JSONArray romans = (JSONArray) romanObject.get("romans");
                 ArrayList<String> romansList = new ArrayList<>();
                 Iterator romansIterator = romans.iterator();
@@ -62,6 +80,12 @@ public class IntToRomanConverter {
             System.exit(2);
         }
     }
+
+    /**
+     * Convert actually return a string representing the long parameter as a roman number
+     * @param decimal a long integer more than zero and less a limit defined by the configuration files.
+     * @return The string representing the value in Roman characters.
+     */
     public String convert(long decimal){
         // I should really check if Math.log!0() is actually quicker than the n empty iterations in avoids
         final int startIndex = (int) Math.log10(decimal);
@@ -72,18 +96,29 @@ public class IntToRomanConverter {
             final long unit = rpt.getUnit();
             final long previousUnit = unit * BASE;
             // indexOfString: always a value in the range 0-9
-            final int indexOfString = (int) ((decimal % previousUnit) / unit);
+            final long remainder = decimal % previousUnit;
+            if (remainder == 0L) break;
+            final int indexOfString = (int) (remainder / unit);
             result.append(rpt.getRoman(indexOfString));
         }
         return result.toString();
     }
 
+    /**
+     * Get the limit one beyond the maximum value the configuration files will handle
+     * @return limit
+     */
     public long getTopLimit(){
         return limit;
     }
 
+    /**
+     * Validate that the long integer is within the range that can be represented
+     * @param decimal
+     * @return  true or false
+     */
     public boolean validate(long decimal){
-        long limit = getTopLimit();
+        final long limit = getTopLimit();
         if(decimal <= 0 || decimal >= limit){
             return false;
         }
