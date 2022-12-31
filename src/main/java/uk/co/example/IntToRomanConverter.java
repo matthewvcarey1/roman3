@@ -29,10 +29,10 @@ public class IntToRomanConverter {
     private long limit;
 
     /**
-     * Returns an instance of IntToRomanConverter
+     * Returns the instance of IntToRomanConverter
      * Making this class follow the singleton pattern.
      * This is to reduce the amount of times the configuration files have to be read.
-     * Outside the constructor and this function none of the class member values are ever changed.
+     * Outside the constructor and this synchronised function none of the class member values are ever changed.
      * @return IntToRomanConverter
      */
     public synchronized static IntToRomanConverter getInstance() {
@@ -87,7 +87,7 @@ public class IntToRomanConverter {
      * @return The string representing the value in Roman characters.
      */
     public String convert(long decimal){
-        // I should really check if Math.log!0() is actually quicker than the n empty iterations in avoids
+        // I should really check if Math.log!0() is actually quicker than the n empty iterations above the result it avoids
         final int startIndex = (int) Math.log10(decimal);
         StringBuilder result = new StringBuilder();
         ListIterator<RomanPowerOfTen> iterator = romanPowers.listIterator(startIndex < romanPowers.size()? startIndex+1 : romanPowers.size());
@@ -96,7 +96,7 @@ public class IntToRomanConverter {
             final long unit = rpt.getUnit();
             final long previousUnit = unit * BASE;
             final long remainder = decimal % previousUnit;
-            // Avoid empty iterations below result
+            // Avoid empty iterations below the result
             if (remainder == 0L) break;
             // indexOfString: always a value in the range 0-9
             final int indexOfString = (int) (remainder / unit);
